@@ -46,7 +46,12 @@
 
 #include "guichan/platform.hpp"
 
-#undef DELETE  //Windows compilation fix
+// windows.h defines DELETE which breaks this file as we have a constant named
+// DELETE, hence we undefine DELETE if it is defined and hope people don't use
+// that windows define with Guichan.
+#if defined (_WIN32) && defined(DELETE)
+#undef DELETE
+#endif
 
 namespace gcn
 {
@@ -89,28 +94,28 @@ namespace gcn
         bool isLetter() const;
 
         /**
-         * Gets the value of the key. If an ascii value exists it
+         * Gets the value of the key. If an ascii value exists it 
          * will be returned. Otherwise an enum value will be returned.
          *
          * @return the value of the key.
          */
         int getValue() const;
 
-		/**
-		 * Compares to keys.
-		 *
-		 * @param key The key to compare this key with.
-		 * @return True if the keys are equal, false otherwise.
-		 */
-		bool operator==(const Key& key) const;
+        /**
+         * Compares two keys.
+         *
+         * @param key The key to compare this key with.
+         * @return True if the keys are equal, false otherwise.
+         */
+        bool operator==(const Key& key) const;
 
-		/**
-		 * Compares to keys.
-		 *
-		 * @param key The key to compare this key with.
-		 * @return True if the keys are not equal, false otherwise.
-		 */
-		bool operator!=(const Key& key) const;
+        /**
+         * Compares two keys.
+         *
+         * @param key The key to compare this key with.
+         * @return True if the keys are not equal, false otherwise.
+         */
+        bool operator!=(const Key& key) const;
 
         /**
          * An enum with key values.

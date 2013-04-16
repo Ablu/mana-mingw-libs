@@ -41,56 +41,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef GCN_OPENGLSDLIMAGELOADER_HPP
-#define GCN_OPENGLSDLIMAGELOADER_HPP
+#ifndef GCN_ALLEGRO_HPP
+#define GCN_ALLEGRO_HPP
 
-#include <guichan/sdl/sdlimageloader.hpp>
+#include <guichan/allegro/allegrofont.hpp>
+#include <guichan/allegro/allegrographics.hpp>
+#include <guichan/allegro/allegroimage.hpp>
+#include <guichan/allegro/allegroimageloader.hpp>
+#include <guichan/allegro/allegroinput.hpp>
 
-#include <guichan/exception.hpp>
-#include <guichan/opengl/openglimage.hpp>
-
-namespace gcn
+extern "C"
 {
-    class Image;
-
     /**
-     * OpenGL ImageLoader that loads images with SDL.
+     * Exists to be able to check for Guichan Allegro with autotools.
+     *
+     * @bug Autotools is incapable of finding this function.
      */
-    class OpenGLSDLImageLoader : public SDLImageLoader
-    {
-    public:
-
-        // Inherited from ImageLoader
-
-        virtual Image* load(const std::string& filename,
-                            bool convertToDisplayFormat = true)
-        {
-            SDL_Surface *loadedSurface = loadSDLSurface(filename);
-
-            if (loadedSurface == NULL)
-            {
-                throw GCN_EXCEPTION(
-                        std::string("Unable to load image file: ") + filename);
-            }
-
-            SDL_Surface *surface = convertToStandardFormat(loadedSurface);
-            SDL_FreeSurface(loadedSurface);
-
-            if (surface == NULL)
-            {
-                throw GCN_EXCEPTION(
-                        std::string("Not enough memory to load: ") + filename);
-            }
-
-            OpenGLImage *image = new OpenGLImage((unsigned int*)surface->pixels,
-                                                 surface->w,
-                                                 surface->h,
-                                                 convertToDisplayFormat);
-            SDL_FreeSurface(surface);
-
-            return image;
-        }
-    };
+    extern void gcnAllegro();
 }
 
-#endif // end GCN_OPENGLSDLIMAGELOADER_HPP
+#endif // end GCN_ALLEGRO_HPP
